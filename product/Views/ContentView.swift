@@ -35,6 +35,9 @@ struct ContentView: View {
             .onAppear {
                 viewModel.fetchProducts()
             }
+            .refreshable {
+              viewModel.fetchProducts()
+            }
         }
     }
 }

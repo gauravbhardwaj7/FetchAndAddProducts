@@ -49,18 +49,41 @@ class ProductViewModel: ObservableObject {
             return
         }
 
-        var components = URLComponents()
-        components.queryItems = [
-            URLQueryItem(name: "product_name", value: productName),
-            URLQueryItem(name: "product_type", value: productType),
-            URLQueryItem(name: "price", value: price),
-            URLQueryItem(name: "tax", value: tax)
-        ]
-
+        let boundary = UUID().uuidString
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = components.percentEncodedQuery?.data(using: .utf8)
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+      
+        var body = Data()
+        let uuid = UUID()
+
+        let parameters = [
+            "product_name": productName,
+            "product_type": productType,
+            "price": price,
+            "tax": tax
+        ]
+
+        for (key, value) in parameters {
+            body.append("--\(boundary)\r\n")
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            body.append("\(value)\r\n")
+        }
+
+        for imageData in images {
+            let filename = "image\(uuid).jpg"
+            let mimetype = "image/jpeg"
+
+            body.append("--\(boundary)\r\n")
+            body.append("Content-Disposition: form-data; name=\"files[]\"; filename=\"\(filename)\"\r\n")
+            body.append("Content-Type: \(mimetype)\r\n\r\n")
+            body.append(imageData)
+            body.append("\r\n")
+        }
+
+        body.append("--\(boundary)--\r\n")
+
+        request.httpBody = body
 
 
         URLSession.shared.dataTaskPublisher(for: request)
@@ -83,6 +106,14 @@ class ProductViewModel: ObservableObject {
                 }
             })
             .store(in: &cancellables)
+    }
+}
+
+extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
     }
 }
 
