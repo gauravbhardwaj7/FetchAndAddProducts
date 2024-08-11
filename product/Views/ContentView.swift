@@ -9,23 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var viewModel = ProductViewModel()
-    @State private var isShowingAddProductView = false
 
     var body: some View {
         NavigationView {
-            List(viewModel.filteredProducts) { product in
-                ProductRowView(product: product)
+            ScrollView {
+                VStack(alignment: .leading) {
+                  ForEach(viewModel.filteredProducts,id: \.id) { product in
+                        ProductRowView(product: product)
+                            .padding(.vertical, 5)
+                    }
+                }
             }
             .navigationTitle("Products")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isShowingAddProductView = true
-                    }) {
+                    NavigationLink(destination: AddProductView()) {
                         Image(systemName: "plus")
-                    }
-                    .sheet(isPresented: $isShowingAddProductView) {
-                        AddProductView()
                     }
                 }
             }
@@ -34,10 +33,11 @@ struct ContentView: View {
                 viewModel.fetchProducts()
             }
             .refreshable {
-              viewModel.fetchProducts()
+                viewModel.fetchProducts()
             }
         }
     }
 }
+
 
 

@@ -12,9 +12,7 @@ class ProductViewModel: ObservableObject {
     @Published var products: [Product] = []
     @Published var errorMessage: String? = nil
     private var cancellables = Set<AnyCancellable>()
-
-    private let apiUrl = "https://app.getswipe.in/api/public/get"
-    private let addProductUrl = "https://app.getswipe.in/api/public/add"
+    private let baseUrl = "https://app.getswipe.in/api/public"
 
     @Published var searchText: String = ""
 
@@ -34,7 +32,8 @@ class ProductViewModel: ObservableObject {
     }
 
     func fetchProducts() {
-        guard let url = URL(string: apiUrl) else {
+      let fetchUrl = "\(baseUrl)/get"
+        guard let url = URL(string: fetchUrl) else {
             self.errorMessage = "Invalid URL"
             return
         }
@@ -57,7 +56,8 @@ class ProductViewModel: ObservableObject {
     }
 
     func addProduct(productName: String, productType: String, price: String, tax: String, images: [Data] = []) {
-        guard let url = URL(string: addProductUrl) else {
+      let addUrl = "\(baseUrl)/add"
+        guard let url = URL(string: addUrl) else {
             self.errorMessage = "Invalid URL"
             return
         }
