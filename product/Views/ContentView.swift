@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
-import PhotosUI
 
 struct ContentView: View {
     @StateObject private var viewModel = ProductViewModel()
     @State private var isShowingAddProductView = false
-    @State private var searchText = ""
 
     var body: some View {
         NavigationView {
-            List(viewModel.products) { product in
+            List(viewModel.filteredProducts) { product in
                 ProductRowView(product: product)
             }
             .navigationTitle("Products")
@@ -31,7 +29,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
             .onAppear {
                 viewModel.fetchProducts()
             }
@@ -41,4 +39,5 @@ struct ContentView: View {
         }
     }
 }
+
 

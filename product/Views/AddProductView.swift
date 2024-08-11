@@ -17,9 +17,14 @@ struct AddProductView: View {
     @State private var price: String = ""
     @State private var tax: String = ""
     @State private var images: [Data] = []
-    @State private var selectedImageItem: PhotosPickerItem? = nil
+    @State private var selectedImageItem: PhotosPickerItem? = nil {
+        didSet {
+            if let newItem = selectedImageItem {
+                loadImage(from: newItem)
+            }
+        }
+    }
     @State private var selectedImageData: Data? = nil
-    @State private var isPickerPresented: Bool = false
 
     var body: some View {
         NavigationView {
@@ -33,25 +38,25 @@ struct AddProductView: View {
                         .keyboardType(.decimalPad)
                 }
 
-                Section(header: Text("Images")) {
-                    if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                    }
-                    PhotosPicker(
-                        selection: $selectedImageItem,
-                        matching: .images,
-                        photoLibrary: .shared()) {
-                            Text("Select Image")
-                        }
-                        .onChange(of: selectedImageItem) { newItem in
-                            if let newItem = newItem {
-                                loadImage(from: newItem)
-                            }
-                        }
-                }
+              Section(header: Text("Images")) {
+                  if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+                      Image(uiImage: uiImage)
+                          .resizable()
+                          .scaledToFit()
+                          .frame(height: 200)
+                  }
+                  PhotosPicker(
+                      selection: $selectedImageItem,
+                      matching: .images,
+                      photoLibrary: .shared()) {
+                          Text("Select Image")
+                      }
+                      .onChange(of: selectedImageItem) { newItem in
+                          if let newItem = newItem {
+                              loadImage(from: newItem)
+                          }
+                      }
+              }
 
                 Button(action: {
                     if let selectedImageData {

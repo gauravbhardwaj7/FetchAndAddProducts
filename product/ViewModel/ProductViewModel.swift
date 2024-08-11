@@ -16,8 +16,21 @@ class ProductViewModel: ObservableObject {
     private let apiUrl = "https://app.getswipe.in/api/public/get"
     private let addProductUrl = "https://app.getswipe.in/api/public/add"
 
+    @Published var searchText: String = ""
+
     init() {
         fetchProducts()
+    }
+
+    var filteredProducts: [Product] {
+        if searchText.isEmpty {
+            return products
+        } else {
+            return products.filter { product in
+                product.productName.lowercased().contains(searchText.lowercased()) ||
+                product.productType.lowercased().contains(searchText.lowercased())
+            }
+        }
     }
 
     func fetchProducts() {
@@ -53,7 +66,7 @@ class ProductViewModel: ObservableObject {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-      
+
         var body = Data()
         let uuid = UUID()
 
