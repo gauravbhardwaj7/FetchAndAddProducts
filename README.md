@@ -21,13 +21,11 @@
 <h2>Installation</h2>
 
 <h3>1. Clone the repository</h3>
-<pre><code>git clone https://github.com/your-username/fetch-add-products-app.git</code></pre>
+<pre><code>https://github.com/gauravbhardwaj7/FetchAndAddProducts.git</code></pre>
 
 <h3>2. Navigate to the project directory</h3>
-<pre><code>cd fetch-add-products-app</code></pre>
 
 <h3>3. Open the project in Xcode</h3>
-<pre><code>open FetchAddProductsApp.xcodeproj</code></pre>
 
 <h3>4. Set up API Endpoints</h3>
 <p>Make sure to update the API endpoints in your project to point to the correct server:</p>
