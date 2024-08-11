@@ -1,8 +1,8 @@
 //
-//  ContentView.swift
+//  AddProductView.swift
 //  product
 //
-//  Created by Gaurav Bhardwaj on 09/08/24.
+//  Created by Gaurav Bhardwaj on 11/08/24.
 //
 
 import SwiftUI
@@ -81,72 +81,5 @@ struct AddProductView: View {
                 print("Error loading image: \(error.localizedDescription)")
             }
         }
-    }
-}
-
-struct ProductListView: View {
-    @StateObject private var viewModel = ProductViewModel()
-    @State private var isShowingAddProductView = false
-    @State private var searchText = ""
-
-    var body: some View {
-        NavigationView {
-            List(viewModel.products) { product in
-                ProductRowView(product: product)
-            }
-            .navigationTitle("Products")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isShowingAddProductView = true
-                    }) {
-                        Image(systemName: "plus")
-                    }
-                    .sheet(isPresented: $isShowingAddProductView) {
-                        AddProductView()
-                    }
-                }
-            }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .onAppear {
-                viewModel.fetchProducts()
-            }
-        }
-    }
-}
-
-struct ProductRowView: View {
-    let product: Product
-
-    var body: some View {
-        HStack {
-            if let url = URL(string: product.image), !product.image.isEmpty {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                } placeholder: {
-                    ProgressView()
-                }
-            } else {
-                Rectangle()
-                    .fill(Color.gray)
-                    .frame(width: 100, height: 100)
-                    .overlay(Text("No Image"))
-            }
-
-            VStack(alignment: .leading, spacing: 5) {
-                Text(product.productName)
-                    .font(.headline)
-                Text("Price: $\(product.price, specifier: "%.2f")")
-                    .font(.subheadline)
-                Text("Type: \(product.productType)")
-                    .font(.subheadline)
-                Text("Tax: \(product.tax, specifier: "%.2f")%")
-                    .font(.subheadline)
-            }
-        }
-        .padding()
     }
 }

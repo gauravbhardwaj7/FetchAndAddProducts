@@ -49,7 +49,6 @@ class ProductViewModel: ObservableObject {
             return
         }
 
-        // Create the form data
         var components = URLComponents()
         components.queryItems = [
             URLQueryItem(name: "product_name", value: productName),
@@ -58,13 +57,12 @@ class ProductViewModel: ObservableObject {
             URLQueryItem(name: "tax", value: tax)
         ]
 
-        // Create a request with POST method
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = components.percentEncodedQuery?.data(using: .utf8)
 
-        // Execute the request
+
         URLSession.shared.dataTaskPublisher(for: request)
             .map { $0.data }
             .decode(type: AddProductResponse.self, decoder: JSONDecoder())
@@ -89,11 +87,5 @@ class ProductViewModel: ObservableObject {
 }
 
 
-struct AddProductResponse: Codable {
-    let message: String
-    let productDetails: Product
-    let productId: Int
-    let success: Bool
-}
 
 

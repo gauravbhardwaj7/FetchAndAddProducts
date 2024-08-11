@@ -23,6 +23,12 @@ struct Product:Codable, Identifiable{
     case productType = "product_type"
     case tax
   }
+}
 
-  
+
+struct AddProductResponse: Codable {
+    let message: String
+    let productDetails: Product
+    let productId: Int
+    let success: Bool
 }
