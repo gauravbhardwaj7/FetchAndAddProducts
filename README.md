@@ -21,7 +21,7 @@
 <h2>Installation</h2>
 
 <h3>1. Clone the repository</h3>
-<pre><code>https://github.com/gauravbhardwaj7/FetchAndAddProducts.git</code></pre>
+<pre><code> git clone https://github.com/gauravbhardwaj7/FetchAndAddProducts.git</code></pre>
 
 <h3>2. Navigate to the project directory</h3>
 
