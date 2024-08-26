@@ -10,6 +10,7 @@ import Foundation
 
 class ProductViewModel: ObservableObject {
     @Published var products: [Product] = []
+    @Published var selectedProducts: [Product] = []
     @Published var errorMessage: String? = nil
     private var cancellables = Set<AnyCancellable>()
     private let baseUrl = "https://app.getswipe.in/api/public"
@@ -119,6 +120,18 @@ class ProductViewModel: ObservableObject {
                 }
             })
             .store(in: &cancellables)
+    }
+
+  func addProductToCart(_ product: Product) {
+        selectedProducts.append(product)
+    }
+
+    func removeProductFromCart(_ product: Product) {
+        selectedProducts.removeAll { $0.id == product.id }
+    }
+
+    func isProductInCart(_ product: Product) -> Bool {
+        return selectedProducts.contains(where: { $0.id == product.id })
     }
 }
 
