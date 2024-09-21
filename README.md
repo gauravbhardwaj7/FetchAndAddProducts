@@ -1,4 +1,4 @@
-<h1>Fetch and Add Products App</h1>
+<h1>Productify</h1>
 
 <p>This is a SwiftUI application that allows users to fetch and add products using GET and POST endpoints.</p>
 
